@@ -2,26 +2,24 @@ import React, { useState } from "react";
 import { Input, Button } from "./index";
 import authService from "../appwrite/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { login } from "../store/authSlice";
+//import { login } from "../store/authSlice";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 
 function Signup() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
   const signup = async (data) => {
     setError("");
     try {
-      const user= await authService.createAccount(data);
-
+      const user = await authService.createAccount(data);
       if (user) {
-        const userData = await authService.getCurrentUser();
-        // console.log("userData", userData);
-        if (userData) dispatch(login(userData));
-        navigate("/");
+        await authService.verifyEmail();
+        navigate("/verify-email");
+        console.log("Account created and verification email sent", user);
       }
     } catch (error) {
       setError(error.message);

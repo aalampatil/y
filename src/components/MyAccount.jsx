@@ -33,6 +33,7 @@ function MyAccount() {
           <h2 className="text-2xl font-semibold text-gray-800">My Account</h2>
           <p className="mt-4 text-lg text-gray-600">👤 {details.name}</p>
           <p className="text-gray-500">✉️ {details.email}</p>
+          <p className="text-gray-500">✉️ {details.emailVerification}</p>
         </div>
       ) : (
         <p className="text-center text-gray-500">No account details found.</p>

@@ -13,13 +13,21 @@ function Login() {
   const { register, handleSubmit } = useForm();
 
 
-  const login = async (data) => {
+  const login = async (email, password) => {
     setError("");
     try {
-      const session = await authService.login(data);
+      const session = await authService.login(email, password);
       if (session) {
-        const userData = await authService.getCurrentUser();
-        if (userData) dispatch(authLogin(userData))
+        const user = await authService.getCurrentUser();
+        console.log(user);
+
+        // Check if verified
+        if (!user.emailVerification) {
+          setError("Please verify your email before logging in.");
+          return;
+        }
+
+        dispatch(authLogin(user));
         navigate("/");
       }
     } catch (error) {

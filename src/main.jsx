@@ -13,6 +13,8 @@ import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 import AllPost from "./pages/AllPost";
 import MyAccount from "./components/MyAccount.jsx";
+import VerifyEmail from "./pages/VerifyEmail.jsx";
+import ConfirmEmail from "./pages/ConfirmEmail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,7 +75,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/post/:slug",
-        element: <Post />,
+        element: (
+          <Protected authentication>
+            <Post />
+          </Protected>
+        ),
+      },
+      {
+        path: "/verify-email",
+        element: (
+          <Protected authentication={false}>
+            <VerifyEmail />
+          </Protected>
+        ),
+      },
+      {
+        path: "/confirm-email",
+        element: (
+          <Protected authentication={false}>
+            <ConfirmEmail />
+          </Protected>
+        ),
       },
     ],
   },

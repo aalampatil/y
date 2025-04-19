@@ -1,3 +1,4 @@
+import { ReactReduxContext } from "react-redux";
 import conf from "../conf/conf"
 import { Client, Account, ID } from "appwrite"
 
@@ -22,6 +23,7 @@ export class AuthService {
                 return user
             }
         } catch (error) {
+            console.log("create account error",error);
             throw error
         }
     }
@@ -30,23 +32,42 @@ export class AuthService {
         try {
             return await this.account.createEmailPasswordSession(email, password)
         } catch (error) {
+            console.log("login",error);
             throw error
         }
     }
 
     async logout() {
-        try {
-            return await this.account.deleteSessions()
-        } catch (error) {
-            throw error
-        }
+      return await this.account.deleteSessions()
     }
 
     async getCurrentUser() {
         try {
             return await this.account.get()
         } catch (error) {
+            console.log("get current user",error);
             throw error
+        }
+    }
+
+    //email verification 
+
+    async verifyEmail(){
+        try {
+             await this.account.createVerification(
+                 `${import.meta.env.VITE_FRONTEND_URL}/confirm-email`
+            )
+        } catch (error) {
+            console.log("email verification error", error);     
+        }
+    }
+
+    async confirmVerification({userId,secret}) {
+        try {
+            return await this.account.updateVerification(userId, secret)
+        } catch (error) {
+            console.log("verification onfirmation error", error);
+            
         }
     }
 }
